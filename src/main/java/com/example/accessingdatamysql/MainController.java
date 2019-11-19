@@ -1,5 +1,8 @@
 package com.example.accessingdatamysql;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(path = "/proveedor")
 public class MainController {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private ProductoRepository productoRepository;
 
@@ -25,6 +30,8 @@ public class MainController {
 
 	@GetMapping(path = "/productos")
 	public @ResponseBody Iterable<Producto> getAllProdutos() {
-		return productoRepository.findAll();
+		Iterable<Producto> listaProductos = productoRepository.findAll();
+		logger.info("Resultado /productos: {}", listaProductos);
+		return listaProductos;
 	}
 }

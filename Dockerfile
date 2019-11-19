@@ -1,11 +1,10 @@
-# fetch basic  image
+FROM maven:3.5.2-jdk-8-alpine AS MAVEN_TOOL_CHAIN
+COPY pom.xml /tmp/
+COPY src /tmp/src/
+WORKDIR /tmp/
+RUN mvn install
+
 FROM openjdk:8-jdk-alpine
-# application placed into /opt/app
-RUN mkdir -p /opt/app
-WORKDIR /opt/app
-# rest of the project
-COPY target /opt/app/target
-# local application port
+COPY --from=MAVEN_TOOL_CHAIN /tmp/target/accessing-data-mysql-0.0.1-SNAPSHOT.jar accessing-data-mysql-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
-# execute it
-CMD ["sh", "-c", "java -jar -Dhttp.keepalive=false /opt/app/target/ms-usuario-rest-0.0.1-SNAPSHOT.jar"]
+CMD ["sh", "-c", "java -jar -Dhttp.keepalive=false accessing-data-mysql-0.0.1-SNAPSHOT.jar"]

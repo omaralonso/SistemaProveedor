@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,6 +33,18 @@ public class MainController {
 	public @ResponseBody Iterable<Producto> getAllProdutos() {
 		Iterable<Producto> listaProductos = productoRepository.findAll();
 		logger.info("Resultado /productos: {}", listaProductos);
+		
+		return listaProductos;
+		
+	}
+	
+	@GetMapping(path = "/productos/{categoria}")
+	public @ResponseBody Iterable<Producto> getProductsPorCategoria(@PathVariable String categoria) {
+		int categ = Integer.parseInt(categoria);
+		Iterable<Producto> listaProductos = productoRepository.findByIdCategoria(categ);
+		logger.info("Resultado /productos/{}: {}", categoria, listaProductos);
+		
 		return listaProductos;
 	}
+	
 }

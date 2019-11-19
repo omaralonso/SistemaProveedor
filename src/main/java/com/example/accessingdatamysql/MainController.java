@@ -44,6 +44,15 @@ public class MainController {
 		
 	}
 	
+	@GetMapping(path = "/producto/{id}")
+	public @ResponseBody Producto getProductById(@PathVariable String id) {
+		int iId = Integer.parseInt(id);
+		Producto producto = productoRepository.findByIdProducto(iId);
+		logger.info("Resultado /producto/{}: {}", id, producto);
+		
+		return producto;
+	}
+	
 	@GetMapping(path = "/productos/{categoria}")
 	public @ResponseBody Iterable<Producto> getProductsPorCategoria(@PathVariable String categoria) {
 		int categ = Integer.parseInt(categoria);
